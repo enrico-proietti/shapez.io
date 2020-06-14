@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/$PROJECT_ID/gcloud'
+ entrypoint: 'compute'
+ args:
+ - instances
+ - list
+
