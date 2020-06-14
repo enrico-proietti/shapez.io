@@ -1,5 +1,5 @@
 steps:
-- name: 'gcr.io/cloud-builders/gcloud'
+- name: 'google/cloud-sdk'
  entrypoint: 'compute'
  args:
  - instances
