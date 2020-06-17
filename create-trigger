@@ -1,0 +1,7 @@
+gcloud scheduler jobs create http ${PROJECT_ID}-run-trigger \
+    --schedule='0 12 * * *' \
+    --uri=https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/triggers/e7f60842-bb86-4692-8339-08ffcc97c2bd:run \
+    --message-body-from-file=./reposource.json \
+    --oauth-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com \
+    --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform 
+    #--message-body={ "repoName" : "https://github.com/enrico-proietti/shapez.io.git", "dir" : "/tmp", "branchName" : "master" } \

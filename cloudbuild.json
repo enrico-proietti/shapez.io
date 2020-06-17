@@ -1,0 +1,21 @@
+{
+    "timeout": "60s",
+    "steps": [
+        {
+            "name": "gcr.io/cloud-builders/gcloud",
+            "entrypoint": "bash",
+            "args": [
+                "-c",
+                "echo "Hello"
+            ]
+        },
+        {
+            "name": "gcr.io/cloud-builders/gcloud",
+            "entrypoint": "bash",
+            "args": [
+                "-c",
+                "echo "World"
+            ]
+        }
+    ],
+}

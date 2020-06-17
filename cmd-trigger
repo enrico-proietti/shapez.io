@@ -1,0 +1,1 @@
+gcloud beta scheduler jobs create http test3 --schedule="* * * * *" --uri=https://cloudbuild.googleapis.com/v1/projects/de-nc-gr-pr-enrico-proietti/triggers/8162c435-3d32-4830-bfeb-65df637858ec:run --message-body={"branchName": "master"} --oauth-service-account-email=de-nc-gr-pr-enrico-proietti@appspot.gserviceaccount.com
