@@ -14,7 +14,7 @@ def doErrorHandling(func, err) {
 
         def build_stage
 
-
+properties([pipelineTriggers([githubPush()])])
 pipeline {
     agent {
         docker { image 'enricoproietti/sonar-scanner:test' }
@@ -24,12 +24,14 @@ pipeline {
      }
     stages {
         stage('Prep') {
+            when { buildingTag() }
             steps {
              git credentialsId: 'github-app', poll: false, url: "https://github.com/enrico-proietti/shapez.io.git", branch: "master"
              sh 'echo ciaobuuu'
              writeFile file: ".npmrc", text: "//registry.npmjs.org/:_authToken=$authToken"
             }
         }
+
 stage('Test') {
             steps {
                 script {
@@ -48,7 +50,7 @@ stage('Test') {
 
                        sq_host = SONAR_HOST_URL
                        sh 'echo $SONAR_HOST_URL'
-                       sh "sonar-scanner -X -Dsonar.projectKey=test -Dsonar.projectName=test -Dsonar.login=05170e8c0619718a3516982543c2fd8ec082e266 -Dsonar.host.url=https://sonarqube.sandbox-enrico-proietti.gcp.skycdp.de  -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info -Dsonar.sourceEncoding=UTF-8 -Dsonar.scm.provider=git -Dsonar.language=js -Dsonar.exclusions=**/node_modules/**,**/*.spec.js,src/mocks/** -Dsonar.coverage.exclusions=**/*.spec.js,src/mocks/**"
+                       sh "sonar-scanner -X -Dsonar.projectKey=test -Dsonar.projectName=test  -Dsonar.login=05170e8c0619718a3516982543c2fd8ec082e266 -Dsonar.host.url=http://172.25.87.14:9000  -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info -Dsonar.sourceEncoding=UTF-8 -Dsonar.scm.provider=git -Dsonar.language=js -Dsonar.exclusions=**/node_modules/**,**/*.spec.js,src/mocks/** -Dsonar.coverage.exclusions=**/*.spec.js,src/mocks/**"
                     }
                 } catch (err) {
 
@@ -62,13 +64,14 @@ stage('Test') {
 
             }
         }
+
 stage('create an artifactory') {
-		
+
   steps {
             script {
                 try {
                     sh 'echo Creating an artifactory'
-                    
+
                 } catch (err) {
 
                    doErrorHandling(build_stage, err)
